@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Azure Peak Gear Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Azure Peak Gear Planner</h1>
+
+<!-- Armor Weight Selector -->
+<div class="slot-box">
+  <label>Maximum Armor Weight:</label>
+   <select id="armorWeight" onchange="populateSlots()">
+    <option value="light">Light</option>
+    <option value="medium">Medium</option>
+    <option value="heavy">Heavy</option>
+  </select>
+
+</div>
+
+<!-- Gear Slots -->
+<div class="slot-box">
+  <label>Head:</label>
+  <select id="headSlot" onchange="updateItemPreview('headSlot','headPreview'); updateTotals();"></select>
+  <span id="headPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Mask:</label>
+  <select id="maskSlot" onchange="updateItemPreview('maskSlot','maskPreview'); updateTotals();"></select>
+  <span id="maskPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Neck:</label>
+  <select id="neckSlot" onchange="updateItemPreview('neckSlot','neckPreview'); updateTotals();"></select>
+  <span id="neckPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Armor:</label>
+  <select id="armorSlot" onchange="updateItemPreview('armorSlot','armorPreview'); updateTotals();"></select>
+  <span id="armorPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Underarmor:</label>
+  <select id="underarmorSlot" onchange="updateItemPreview('underarmorSlot','underarmorPreview'); updateTotals();"></select>
+  <span id="underarmorPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Wrists:</label>
+  <select id="wristsSlot" onchange="updateItemPreview('wristsSlot','wristsPreview'); updateTotals();"></select>
+  <span id="wristsPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Gloves:</label>
+  <select id="glovesSlot" onchange="updateItemPreview('glovesSlot','glovesPreview'); updateTotals();"></select>
+  <span id="glovesPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Legs:</label>
+  <select id="legsSlot" onchange="updateItemPreview('legsSlot','legsPreview'); updateTotals();"></select>
+  <span id="legsPreview" class="preview">No item selected</span>
+</div>
+
+<div class="slot-box">
+  <label>Feet:</label>
+  <select id="feetSlot" onchange="updateItemPreview('feetSlot','feetPreview'); updateTotals();"></select>
+  <span id="feetPreview" class="preview">No item selected</span>
+</div>
+
+<!-- Bodypart DR Breakdown -->
+<h2>Main Coverage Breakdown</h2>
+
+<table class="zone-table">
+  <tr>
+    <th>Body Part</th>
+    <th>Blunt</th>
+    <th>Slash</th>
+    <th>Stab</th>
+    <th>Piercing</th>
+    <th>Fire</th>
+    <th>Acid</th>
+  </tr>
+
+  <!-- HAIR -->
+  <tr>
+    <td>Hair</td>
+    <td id="zoneHairBlunt"></td>
+    <td id="zoneHairSlash"></td>
+    <td id="zoneHairStab"></td>
+    <td id="zoneHairPiercing"></td>
+    <td id="zoneHairFire"></td>
+    <td id="zoneHairAcid"></td>
+  </tr>
+
+  <!-- HEAD -->
+  <tr>
+    <td>Head</td>
+    <td id="zoneHeadBlunt"></td>
+    <td id="zoneHeadSlash"></td>
+    <td id="zoneHeadStab"></td>
+    <td id="zoneHeadPiercing"></td>
+    <td id="zoneHeadFire"></td>
+    <td id="zoneHeadAcid"></td>
+  </tr>
+
+  <!-- RIGHT EYE -->
+  <tr>
+    <td>Right Eye</td>
+    <td id="zoneRight_eyeBlunt"></td>
+    <td id="zoneRight_eyeSlash"></td>
+    <td id="zoneRight_eyeStab"></td>
+    <td id="zoneRight_eyePiercing"></td>
+    <td id="zoneRight_eyeFire"></td>
+    <td id="zoneRight_eyeAcid"></td>
+  </tr>
+
+  <!-- LEFT EYE -->
+  <tr>
+    <td>Left Eye</td>
+    <td id="zoneLeft_eyeBlunt"></td>
+    <td id="zoneLeft_eyeSlash"></td>
+    <td id="zoneLeft_eyeStab"></td>
+    <td id="zoneLeft_eyePiercing"></td>
+    <td id="zoneLeft_eyeFire"></td>
+    <td id="zoneLeft_eyeAcid"></td>
+  </tr>
+
+  <!-- EARS -->
+  <tr>
+    <td>Ears</td>
+    <td id="zoneEarsBlunt"></td>
+    <td id="zoneEarsSlash"></td>
+    <td id="zoneEarsStab"></td>
+    <td id="zoneEarsPiercing"></td>
+    <td id="zoneEarsFire"></td>
+    <td id="zoneEarsAcid"></td>
+  </tr>
+
+  <!-- NOSE -->
+  <tr>
+    <td>Nose</td>
+    <td id="zoneNoseBlunt"></td>
+    <td id="zoneNoseSlash"></td>
+    <td id="zoneNoseStab"></td>
+    <td id="zoneNosePiercing"></td>
+    <td id="zoneNoseFire"></td>
+    <td id="zoneNoseAcid"></td>
+  </tr>
+
+  <!-- MOUTH -->
+  <tr>
+    <td>Mouth</td>
+    <td id="zoneMouthBlunt"></td>
+    <td id="zoneMouthSlash"></td>
+    <td id="zoneMouthStab"></td>
+    <td id="zoneMouthPiercing"></td>
+    <td id="zoneMouthFire"></td>
+    <td id="zoneMouthAcid"></td>
+  </tr>
+
+  <!-- NECK -->
+  <tr>
+    <td>Neck</td>
+    <td id="zoneNeckBlunt"></td>
+    <td id="zoneNeckSlash"></td>
+    <td id="zoneNeckStab"></td>
+    <td id="zoneNeckPiercing"></td>
+    <td id="zoneNeckFire"></td>
+    <td id="zoneNeckAcid"></td>
+  </tr>
+
+  <!-- CHEST -->
+  <tr>
+    <td>Chest</td>
+    <td id="zoneChestBlunt"></td>
+    <td id="zoneChestSlash"></td>
+    <td id="zoneChestStab"></td>
+    <td id="zoneChestPiercing"></td>
+    <td id="zoneChestFire"></td>
+    <td id="zoneChestAcid"></td>
+  </tr>
+
+  <!-- VITALS -->
+  <tr>
+    <td>Vitals</td>
+    <td id="zoneVitalsBlunt"></td>
+    <td id="zoneVitalsSlash"></td>
+    <td id="zoneVitalsStab"></td>
+    <td id="zoneVitalsPiercing"></td>
+    <td id="zoneVitalsFire"></td>
+    <td id="zoneVitalsAcid"></td>
+  </tr>
+
+  <!-- GROIN -->
+  <tr>
+    <td>Groin</td>
+    <td id="zoneGroinBlunt"></td>
+    <td id="zoneGroinSlash"></td>
+    <td id="zoneGroinStab"></td>
+    <td id="zoneGroinPiercing"></td>
+    <td id="zoneGroinFire"></td>
+    <td id="zoneGroinAcid"></td>
+  </tr>
+
+  <!-- LEFT ARM -->
+  <tr>
+    <td>Left Arm</td>
+    <td id="zoneArm_leftBlunt"></td>
+    <td id="zoneArm_leftSlash"></td>
+    <td id="zoneArm_leftStab"></td>
+    <td id="zoneArm_leftPiercing"></td>
+    <td id="zoneArm_leftFire"></td>
+    <td id="zoneArm_leftAcid"></td>
+  </tr>
+
+  <!-- RIGHT ARM -->
+  <tr>
+    <td>Right Arm</td>
+    <td id="zoneArm_rightBlunt"></td>
+    <td id="zoneArm_rightSlash"></td>
+    <td id="zoneArm_rightStab"></td>
+    <td id="zoneArm_rightPiercing"></td>
+    <td id="zoneArm_rightFire"></td>
+    <td id="zoneArm_rightAcid"></td>
+  </tr>
+
+  <!-- LEFT HAND -->
+  <tr>
+    <td>Left Hand</td>
+    <td id="zoneHand_leftBlunt"></td>
+    <td id="zoneHand_leftSlash"></td>
+    <td id="zoneHand_leftStab"></td>
+    <td id="zoneHand_leftPiercing"></td>
+    <td id="zoneHand_leftFire"></td>
+    <td id="zoneHand_leftAcid"></td>
+  </tr>
+
+  <!-- RIGHT HAND -->
+  <tr>
+    <td>Right Hand</td>
+    <td id="zoneHand_rightBlunt"></td>
+    <td id="zoneHand_rightSlash"></td>
+    <td id="zoneHand_rightStab"></td>
+    <td id="zoneHand_rightPiercing"></td>
+    <td id="zoneHand_rightFire"></td>
+    <td id="zoneHand_rightAcid"></td>
+  </tr>
+
+  <!-- LEFT LEG -->
+  <tr>
+    <td>Left Leg</td>
+    <td id="zoneLeg_leftBlunt"></td>
+    <td id="zoneLeg_leftSlash"></td>
+    <td id="zoneLeg_leftStab"></td>
+    <td id="zoneLeg_leftPiercing"></td>
+    <td id="zoneLeg_leftFire"></td>
+    <td id="zoneLeg_leftAcid"></td>
+  </tr>
+
+  <!-- RIGHT LEG -->
+  <tr>
+    <td>Right Leg</td>
+    <td id="zoneLeg_rightBlunt"></td>
+    <td id="zoneLeg_rightSlash"></td>
+    <td id="zoneLeg_rightStab"></td>
+    <td id="zoneLeg_rightPiercing"></td>
+    <td id="zoneLeg_rightFire"></td>
+    <td id="zoneLeg_rightAcid"></td>
+  </tr>
+
+  <!-- LEFT FOOT -->
+  <tr>
+    <td>Left Foot</td>
+    <td id="zoneFoot_leftBlunt"></td>
+    <td id="zoneFoot_leftSlash"></td>
+    <td id="zoneFoot_leftStab"></td>
+    <td id="zoneFoot_leftPiercing"></td>
+    <td id="zoneFoot_leftFire"></td>
+    <td id="zoneFoot_leftAcid"></td>
+  </tr>
+
+  <!-- RIGHT FOOT -->
+  <tr>
+    <td>Right Foot</td>
+    <td id="zoneFoot_rightBlunt"></td>
+    <td id="zoneFoot_rightSlash"></td>
+    <td id="zoneFoot_rightStab"></td>
+    <td id="zoneFoot_rightPiercing"></td>
+    <td id="zoneFoot_rightFire"></td>
+    <td id="zoneFoot_rightAcid"></td>
+  </tr>
+
+</table>
+
+<script src="script.js"></script>
+<script src="hat.js"></script>
+<script src="neck.js"></script>
+<script src="mask.js"></script>
+<script src="armor.js"></script>
+<script src="wrists.js"></script>
+<script src="gloves.js"></script>
+<script src="legs.js"></script>
+<script src="feet.js"></script>
+
+</body>
+</html>
